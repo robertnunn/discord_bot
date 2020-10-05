@@ -5,6 +5,7 @@ from discord.ext import commands
 import random
 import re
 
+
 def load_creds(filepath):
     try:
         with open(filepath, "r") as c:
