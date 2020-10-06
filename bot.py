@@ -45,16 +45,15 @@ def parse_dice(dice_str: str):
 
     num_dice = int(parsed.group(1))
     num_sides = int(parsed.group(2))
+    results, total = roll_dice(num_dice, num_sides)
     try:
         bonus = int(parsed.group(3))
         bonus_str = f'+{str(bonus)}' if bonus > 0 else str(bonus)
+        total += bonus
+        results.append(bonus_str)   
     except:
-        bonus = 0
-        bonus_str = ''
-    results, total = roll_dice(num_dice, num_sides)
-    total += bonus
-    results.append(bonus_str)
-
+        pass
+    
     return (f'{parsed.group(0)}', results, total)
 
 
