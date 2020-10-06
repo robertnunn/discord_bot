@@ -1,4 +1,3 @@
-from ast import parse
 import os
 import json
 from discord.ext import commands
@@ -20,10 +19,7 @@ os.chdir(os.path.dirname(__file__))
 cred_path = "bot_creds.json"
 creds = load_creds(cred_path)
 token = creds["TOKEN"]
-
 bot = commands.Bot(command_prefix="!")
-# client = discord.Client()
-# commands = build_commands()
 
 
 @bot.event
