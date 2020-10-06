@@ -29,6 +29,9 @@ async def on_ready():
 
 @bot.command("liar")
 async def say_liar(ctx):
+    """
+    Call someone a liar!
+    """
     await ctx.send(
         "What a fucking liar dude! What a fucking weaselly little liar dude! What a fucking weaselly little liar dude! Holy shit dude! Holy fucking shit dude! Literally lying. Still lying to his audience!"
     )
@@ -68,8 +71,12 @@ def roll_dice(num :int, sides :int):
 
 @bot.command()
 async def dice(ctx, dice_str: str):
+    """
+    Roll dice using standard dice syntax (2d6, 4d4+7)
+    """
     rolled_dice, results, total = parse_dice(dice_str)
     msg = f'Rolled {rolled_dice}: {", ".join(results)} = {total}'
     await ctx.send(msg)
+
 
 bot.run(token)
