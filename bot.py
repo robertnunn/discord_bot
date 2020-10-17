@@ -15,11 +15,14 @@ def load_creds(filepath):
         exit(1)
 
 
+# bot setup
 os.chdir(os.path.dirname(__file__))
 cred_path = "bot_creds.json"
 creds = load_creds(cred_path)
 token = creds["TOKEN"]
 bot = commands.Bot(command_prefix="!")
+
+# regex for the dice rolling
 separators_re = re.compile(r'[-\+x]')
 dice_re = re.compile(r'^(\d+)d(\d+)!?$')
 drop_dice_re = re.compile(r'^(\d+)?[L|H]$')
@@ -219,7 +222,8 @@ def do_the_needful(dice_str):
 async def dice(ctx, dice_str: str):
     """
     Roll dice using standard dice syntax (2d6, 4d4+7)
-    `-XL` to drop the lowest `X` dice
+    Dice may be chained (2d10+1d6+2)
+    `-XL` to drop the lowest `X` dice (omitting `X` means `X`=1)
     `XdY!` to roll exploding dice
     """
     roll_str, rolled_dice = do_the_needful(dice_str)
@@ -228,6 +232,74 @@ async def dice(ctx, dice_str: str):
         msg = roll_str
     else:
         msg = f'Error in dice string! The argument passed doesn\'t match what was rolled!\n{roll_str}'
+    await ctx.send(msg)
+
+
+@bot.command('8ball')
+async def eight_ball(ctx):
+    """
+    Roll a magic eight-ball
+    """
+    with open('8ball.txt', 'r') as f:
+        lines = f.read().split('\n')
+
+    msg = random.choice(lines)
+    await ctx.send(msg)
+
+
+@bot.command()
+async def dnd(ctx, adventure=0):
+    """
+    Get a random D&D adventure scenario
+    dnd <adventure> allows picking of a specific adventure
+    """
+    with open('dnd.txt', 'r') as f:
+        adventures = f.read().split('\n')
+
+    if 1 <= adventure <= 100:
+        msg = adventure[adventure-1]
+    else:
+        msg = random.choice(adventures)
+
+    await ctx.send(msg)
+
+
+@bot.command()
+async def magic20(ctx, cmd='', arg=''):
+    """
+    Roll a magic d20 (like an 8ball, but better)
+    """
+    with open('magic20.txt') as f:
+        lines = f.read().split('\n')
+
+    if cmd.lower() == 'add':
+        arg = arg.replace('\n', '')
+        exceptions = '!#$%&? ^*()-_=+[]{};:\'",./<>`~'
+        for i in arg:  #sanitizin' muh inputs
+            if not i.isalnum() and i not in exceptions:
+                arg = arg.replace(i, '')
+        
+        if arg not in lines:  # no dupes
+            with open('magic20.txt', 'a') as f:
+                f.write(f'\n{arg}')
+            msg = f'Added\n{arg}\nto the list of responses as number {len(lines)+1}'
+    elif cmd.lower() == 'del':
+        try:  # basic error checking
+            arg = int(arg)
+            if 1 <= arg <= len(lines):  # more error checking
+                removed = lines.pop(arg-1)
+                with open('magic20.txt', 'w') as f:
+                    f.write('\n'.join(lines))
+                msg = f'Removed {removed} from the list'
+            else:
+                msg = f'Error: specified response is out of bounds'
+        except:
+            msg = f'Error: you must specify a number for the line you wish to delete. {arg} was not recognized as a numeric literal'
+    else:
+        msg = random.choice(lines)
+        num = lines.index(msg)+1
+        msg = f'{num}. {msg}'
+
     await ctx.send(msg)
 
 
