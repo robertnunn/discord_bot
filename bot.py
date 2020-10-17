@@ -21,6 +21,7 @@ cred_path = "bot_creds.json"
 creds = load_creds(cred_path)
 token = creds["TOKEN"]
 bot = commands.Bot(command_prefix="!")
+repo = creds["REPO"]
 
 # regex for the dice rolling
 separators_re = re.compile(r'[-\+x]')
@@ -316,6 +317,14 @@ async def magic20(ctx, cmd='', arg=''):
         msg = f'{num}. {msg}'
 
     await ctx.send(msg)
+
+
+@bot.command()
+async def github(ctx):
+    """
+    Displays the repo for this bot.
+    """
+    await ctx.send(f'The repo for Jeeves is at:\n{repo}')
 
 
 bot.run(token)
