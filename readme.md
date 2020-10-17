@@ -10,4 +10,5 @@ Prefix commands with a `!` to use them.
     - `XdY!` to roll exploding dice
 1. **8ball**: Ask the magic 8-ball.
 1. **dnd** `num`: If `num` is omitted or 1 > `num` > 100, gets a random adventure from "The Doc Aquatic Brand Random Adventure Table". If `num` is specified, get that specific adventure.
-1. **magic20**: Custom version of the magic 8ball, all custom responses.
+1. **magic20** `cmd` `arg`: Custom version of the magic 8ball, all custom responses. Commands are `add` and `del`. `add` allows the addition of a quoted string to the list of responses (limited to 120 characters). `del` allows removal based on the number of the response.
+1. **gta_bonuses**: 

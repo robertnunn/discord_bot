@@ -28,6 +28,9 @@ dice_re = re.compile(r'^(\d+)d(\d+)!?$')
 drop_dice_re = re.compile(r'^(\d+)?[L|H]$')
 num_re = re.compile(r'^\d*$')
 
+# magic20 rules
+char_limit = 120
+
 
 @bot.event
 async def on_ready():
@@ -273,13 +276,21 @@ async def magic20(ctx, cmd='', arg=''):
         lines = f.read().split('\n')
 
     if cmd.lower() == 'add':
+        ok_to_add = True
         arg = arg.replace('\n', '')
         exceptions = '!#$%&? ^*()-_=+[]{};:\'",./<>`~'
         for i in arg:  #sanitizin' muh inputs
             if not i.isalnum() and i not in exceptions:
                 arg = arg.replace(i, '')
+
+        if len(arg) > char_limit: # enforce character limit
+            ok_to_add = False
+            msg = f'Error: message is over the character limit ({char_limit}) by {len(arg)-char_limit} characters'
         
         if arg not in lines:  # no dupes
+            ok_to_add = False
+        
+        if ok_to_add:
             with open('magic20.txt', 'a') as f:
                 f.write(f'\n{arg}')
             msg = f'Added\n{arg}\nto the list of responses as number {len(lines)+1}'
