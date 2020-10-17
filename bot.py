@@ -274,7 +274,10 @@ async def magic20(ctx, cmd='', arg=''):
     """
     with open('magic20.txt') as f:
         lines = f.read().split('\n')
-    lines.remove('')
+    try:
+        lines.remove('')
+    except:
+        pass
 
     if cmd.lower() == 'add':
         ok_to_add = True
