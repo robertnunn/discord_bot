@@ -1,8 +1,13 @@
 import os
 import json
 from discord.ext import commands
+import discord
 import random
 import re
+from bs4 import BeautifulSoup as BS
+import requests
+import datetime
+from dateutil.parser import parse
 
 
 def load_creds(filepath):
@@ -32,6 +37,23 @@ num_re = re.compile(r'^\d*$')
 # magic20 rules
 magic20_char_limit = 120
 
+# gta bonus variables
+gta_bonuses = dict()
+
+
+@bot.command("randomvoice")
+async def choose_random_voice_member(ctx):
+    calling_user = ctx.message.author
+    voice_state = calling_user.voice  # none if not in VC
+    if voice_state == None:
+        msg = f"Error: {calling_user.display_name} is not in a voice channel"
+    else:
+        voice_channel = voice_state.channel
+        user_list = voice_channel.members
+        the_lucky_user = random.choice(user_list)
+        msg = f"The lucky user is: {the_lucky_user.display_name}!"
+    await ctx.send(msg)
+
 
 @bot.event
 async def on_ready():
@@ -44,7 +66,7 @@ async def say_liar(ctx):
     Call someone a liar!
     """
     await ctx.send(
-        "What a fucking liar dude! What a fucking weaselly little liar dude! What a fucking weaselly little liar dude! Holy shit dude! Holy fucking shit dude! Literally lying. Still lying to his audience!"
+        "What a fucking liar dude! What a fucking weaselly little liar dude! What a fucking weaselly little liar dude! Holy shit dude! Holy fucking shit dude! Literally lying. Still lying!"
     )
 
 
@@ -227,8 +249,9 @@ async def dice(ctx, dice_str: str):
     """
     Roll dice using standard dice syntax (2d6, 4d4+7)
     Dice may be chained (2d10+1d6+2)
-    `-XL` to drop the lowest `X` dice (omitting `X` means `X`=1)
-    `XdY!` to roll exploding dice
+    -XL to drop the lowest X dice (omitting X means X=1)
+    -XH to drop the highest X dice (omitting X means X=1)
+    XdY! to roll exploding dice
     """
     roll_str, rolled_dice = do_the_needful(dice_str)
     # roll_str = f'Rolled {rolled_dice}: {", ".join(results)} = {total}'
@@ -254,7 +277,7 @@ async def eight_ball(ctx):
 @bot.command()
 async def dnd(ctx, adventure=0):
     """
-    Get a random D&D adventure scenario
+    Get a random D&D adventure scenario (100 total)
     dnd <adventure> allows picking of a specific adventure
     """
     with open('dnd.txt', 'r') as f:
@@ -333,6 +356,15 @@ async def github(ctx):
     Displays the repo for this bot.
     """
     await ctx.send(f'The repo for Jeeves is at:\n{repo}')
+
+
+@bot.command()
+async def gtabonus(ctx):
+    """
+    Show the current GTA Online weekly bonuses
+    604,800s == 7 days
+    """
+    await ctx.send('When implemented, this will fetch and display the current bonuses for GTA Online.')
 
 
 bot.run(token)
