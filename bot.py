@@ -323,12 +323,12 @@ async def magic20(ctx, cmd='', arg=''):
         
         if arg in lines:  # no dupes
             ok_to_add = False
-            msg.append(f'Error: message `{arg}` is already in the list')
+            msg.append('Error: message `' + arg + '` is already in the list')
         
         if ok_to_add:  # this must come last
             with open('magic20.txt', 'a') as f:
-                f.write(f'\n{arg}')
-            msg = f'Added\n{arg}\nto the list of responses as number {len(lines)+1}'
+                f.write('\n' + arg)
+            msg = 'Added\n' + arg + f'\nto the list of responses as number {len(lines)+1}'
             
     elif cmd.lower() == 'del':
         try:  # basic error checking
