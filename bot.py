@@ -393,13 +393,13 @@ async def github(ctx):
     await ctx.send(f'The repo for Jeeves is at:\n{repo}')
 
 
-@bot.command()
-async def gtabonus(ctx):
-    """
-    Show the current GTA Online weekly bonuses
-    604,800s == 7 days
-    """
-    await ctx.send('When implemented, this will fetch and display the current bonuses for GTA Online.')
+# @bot.command()
+# async def gtabonus(ctx):
+#     """
+#     Show the current GTA Online weekly bonuses
+#     604,800s == 7 days
+#     """
+#     await ctx.send('When implemented, this will fetch and display the current bonuses for GTA Online.')
 
 
 bot.run(token)
