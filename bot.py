@@ -52,14 +52,4 @@ async def github(ctx):
     await ctx.send(f'The repo for Jeeves is at:\n{repo}')
 
 
-@bot.command("getids")
-async def get_user_ids(ctx):
-    calling_user = ctx.message.author
-    guild = calling_user.guild
-    users = [{i.id: {'name': i.display_name}} for i in guild.members]
-    # with open('test users.json', 'w') as t:
-    #     t.write(json.dumps(users, indent=2))
-
-    await calling_user.send(json.dumps(users, indent=2))
-
 bot.run(token)
