@@ -19,14 +19,14 @@ async def steam(ctx, cmd='', arg=''):
         with open('users.json', 'r') as u:
             user_data = json.loads(u.read())
         
-        if uid := user_data.get(str(ctx.message.author.id)):
-            user_data[uid]['steam']['id'] = new_steam_id
+        if user_data.get(str(ctx.message.author.id)):
+            user_data[str(ctx.message.author.id)]['steam']['id'] = new_steam_id
             await calling_user.send(f'Successfully registered steam id {new_steam_id} with your discord account!')
         else:
-            user_data[uid] = {'name': calling_user.display_name, 'steam': {'id': new_steam_id}}
+            user_data[str(ctx.message.author.id)] = {'name': calling_user.display_name, 'steam': {'id': new_steam_id}}
             await calling_user.send(f'Successfully registered a new user and steam id {new_steam_id}!')
         
         with open('users.json', 'w') as u:
             u.write(json.dumps(user_data, indent=2))
     else:
-        await ctx.send(f'Error: unrecognized command "{cmd}"')
+        await ctx.send(f'Error: unrecognized command `{cmd}`')
