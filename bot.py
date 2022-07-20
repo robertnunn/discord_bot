@@ -1,5 +1,4 @@
 import os
-import json
 from discord.ext import commands
 import discord
 import importlib
