@@ -4,7 +4,7 @@ import re
 from utils import load_creds
 
 steam_key = load_creds('bot_creds.json')['STEAM_API_KEY']
-steam_id_re = re.compile(r'\d{18}')
+steam_id_re = re.compile(r'\d{17}')
 
 def get_steam_apps():
     url = 'https://api.steampowered.com/ISteamApps/GetAppList/v2/'
