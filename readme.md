@@ -13,3 +13,5 @@ Prefix commands with a `!` to use them.
 1. **magic20** `cmd` `arg`: Custom version of the magic 8ball, all custom responses. Commands are `add` and `del`. `add` allows the addition of a quoted string to the list of responses (limited to 120 characters). `del` allows removal based on the number of the response.
 1. **github**: Displays the link to the repo for this bot.
 1. **randomvoice**: Randomly chooses a user from the voice channel the calling user is in. If the calling user isn't in a voice channel, an appropriate error message will be displayed.
+1. **steam** `cmd` `arg`: Provides administrative utilities for anything to do with steam. `cmd` currently only recognizes `register` with the `arg` being your steam id.
+1. **gic**: If you're in a voice channel with more than one person who has a steam id on file and a public steam profile, this will create a list of multiplayer games that you all have in common. It also includes a separate table for games which at least one person has that are Remote Play Together (RPT).
