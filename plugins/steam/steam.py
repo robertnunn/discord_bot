@@ -11,8 +11,9 @@ async def steam(ctx, cmd='', arg=''):
     Commands:
         register <arg>: Deals with registering steam ids and steam-related data
             args:
-                [steam_id]: the steam ID you wish to be associated with your discord account (\d{17})
+                [steam_id]: the steam ID you wish to be associated with your discord account (\d{17}). This also works in DMs.
                 'list': list users in the server who have steam IDs on file
+                'remove': removes your steam ID from the bot's records
     '''
     calling_user = ctx.message.author
     cmd = sanitize_input(cmd)
@@ -46,7 +47,14 @@ async def steam(ctx, cmd='', arg=''):
             registered.insert(0, 'The following users have steam IDs on file: ```')
             registered.append('```')
             await ctx.send('\n'.join(registered))
-            
+        elif arg.lower() == 'remove':
+            if str(calling_user.id) in user_data.keys():
+                user_data[str(calling_user.id)]['steam']['id'] = ''
+                with open('users.json', 'w') as u:
+                    u.write(json.dumps(user_data, indent=2))
+                await ctx.send(f'Successfully removed the steam ID for {calling_user.display_name}!')
+            else:
+                await ctx.send(f'Error: {calling_user.display_name} has no data on record.')
         else:
             await calling_user.send(f'Error: arg "{arg}" not a valid argument for the "register" command.')
             return
