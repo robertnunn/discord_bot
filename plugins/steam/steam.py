@@ -35,13 +35,9 @@ async def steam(ctx, cmd='', arg=''):
         elif arg.lower() == 'list':
             registered = list()
             guild = ctx.guild
-            print(guild.name)
             for k,v in user_data.items():
-                print(f'checking {v["name"]}')
                 if sid := v['steam'].get('id'):
-                    print(sid)
                     if user := guild.get_member(int(k)):
-                        print(user.display_name)
                         registered.append(user.display_name)
             registered.sort()
             registered.insert(0, 'The following users have steam IDs on file: ```')
